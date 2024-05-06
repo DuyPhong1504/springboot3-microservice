@@ -1,0 +1,21 @@
+spring:
+  devtools:
+    livereload:
+      enabled: false
+  datasource:
+    url: "jdbc:mysql://localhost:3306/identity_service"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    username: phong
+    password: 15042000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+jwt:
+  signKey : "qtMps2yM7+GPCMbXcluBsNFtDEOrtysz1mC9Jy7nY7kNylxqyqVepSfYbM4tH4z4"
+  valid-duration: 3600 # in second
+  refreshable-duration: 36000 # in seconds
