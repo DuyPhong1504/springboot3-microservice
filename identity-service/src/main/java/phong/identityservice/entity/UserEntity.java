@@ -24,4 +24,5 @@ public class UserEntity {
     private String email;
     private String fullName;
     private LocalDate dob;
+    private boolean deleteFlg;
 }
