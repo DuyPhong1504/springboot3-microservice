@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import phong.identityservice.entity.UserEntity;
 import phong.identityservice.model.UserCreateRequest;
 import phong.identityservice.model.UserUpdateRequest;
+import phong.identityservice.response.UserResponse;
 import phong.identityservice.service.UserService;
 
 import java.util.List;
@@ -17,22 +18,22 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getAll")
-    List<UserEntity> getAllUser() {
+    List<UserResponse> getAllUser() {
         return userService.getAllUser();
     }
 
     @PostMapping("/create")
-    UserEntity createUser(@RequestBody @Valid UserCreateRequest request) {
+    UserResponse createUser(@RequestBody @Valid UserCreateRequest request) {
         return userService.createUser(request);
     }
 
     @GetMapping("/{userId}")
-    UserEntity getUser(@PathVariable("userId") String userId) {
+    UserResponse getUser(@PathVariable("userId") String userId) {
         return userService.getUser(userId);
     }
 
     @PutMapping("/{userId}")
-    UserEntity updateUser(@PathVariable("userId") String userId,@RequestBody UserUpdateRequest request){
+    UserResponse updateUser(@PathVariable("userId") String userId,@RequestBody UserUpdateRequest request){
         return userService.updateUser(userId,request);
     }
 
