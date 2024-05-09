@@ -3,13 +3,11 @@ package phong.identityservice.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import phong.identityservice.entity.UserEntity;
-import phong.identityservice.model.UserCreateRequest;
-import phong.identityservice.model.UserUpdateRequest;
-import phong.identityservice.response.UserResponse;
+import phong.identityservice.model.request.UserCreateRequest;
+import phong.identityservice.model.request.UserUpdateRequest;
+import phong.identityservice.model.response.ApiResponse;
+import phong.identityservice.model.response.UserResponse;
 import phong.identityservice.service.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -18,8 +16,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getAll")
-    List<UserResponse> getAllUser() {
-        return userService.getAllUser();
+    ApiResponse getAllUser() {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setResult(userService.getAllUser());
+        return apiResponse;
     }
 
     @PostMapping("/create")

@@ -1,4 +1,4 @@
-package phong.identityservice.response;
+package phong.identityservice.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

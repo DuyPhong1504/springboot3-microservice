@@ -1,10 +1,11 @@
-package phong.identityservice.response;
+package phong.identityservice.model.response;
 
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
@@ -17,4 +18,5 @@ public class UserResponse {
     String fullName;
     LocalDate dob;
     boolean deleteFlg;
+    Set<String> roles;
 }

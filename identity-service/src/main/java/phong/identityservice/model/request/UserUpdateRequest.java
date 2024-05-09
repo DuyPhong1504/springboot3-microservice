@@ -1,4 +1,4 @@
-package phong.identityservice.model;
+package phong.identityservice.model.request;
 
 import lombok.Data;
 
