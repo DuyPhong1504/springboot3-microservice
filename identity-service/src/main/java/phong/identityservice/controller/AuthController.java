@@ -1,5 +1,6 @@
 package phong.identityservice.controller;
 
+import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -8,9 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import phong.identityservice.model.request.AuthenticationRequest;
+import phong.identityservice.model.request.CheckTokenRequest;
 import phong.identityservice.model.response.ApiResponse;
 import phong.identityservice.model.response.AuthenticationResponse;
+import phong.identityservice.model.response.CheckTokenResponse;
 import phong.identityservice.service.AuthenticationService;
+
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,8 +26,16 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        AuthenticationResponse response =  authenticationService.authenticate(request);
+        AuthenticationResponse response = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
+                .result(response)
+                .build();
+    }
+
+    @PostMapping("/checkToken")
+    ApiResponse<CheckTokenResponse> checkToken(@RequestBody CheckTokenRequest request) throws ParseException, JOSEException {
+        CheckTokenResponse response = authenticationService.checkToken(request);
+        return ApiResponse.<CheckTokenResponse>builder()
                 .result(response)
                 .build();
     }

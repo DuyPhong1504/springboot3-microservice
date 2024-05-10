@@ -13,7 +13,6 @@ public interface UserMapper {
     UserEntity toUserEntity(UserCreateRequest request);
 
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "roles", source = "roles")
     UserResponse toUserResponse(UserEntity entity);
 
     void  updateUser(@MappingTarget UserEntity userEntity, UserUpdateRequest request);

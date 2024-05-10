@@ -8,4 +8,6 @@ public class IdentityService {
     public static void main(String[] args) {
         SpringApplication.run(IdentityService.class, args);
     }
+
+
 }

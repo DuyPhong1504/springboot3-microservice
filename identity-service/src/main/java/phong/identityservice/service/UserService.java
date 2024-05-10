@@ -30,12 +30,13 @@ public class UserService {
 
     UserMapper userMapper;
 
+    PasswordEncoder passwordEncoder;
+
 
     public UserResponse createUser(UserCreateRequest request) {
         if (userRepository.findByUserName(request.getUserName()).isPresent()) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         UserEntity userEntity = userMapper.toUserEntity(request);
         HashSet<String> roles = new HashSet<>();
@@ -58,10 +59,10 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(userEntity));
     }
 
-    public boolean deleteUser(String id) {
+    public UserResponse deleteUser(String id) {
         UserEntity userEntity = findUserById(id);
         userEntity.setDeleteFlg(true);
-        return userRepository.save(userEntity).isDeleteFlg();
+        return userMapper.toUserResponse(userRepository.save(userEntity));
     }
 
     UserEntity findUserById(String id) {
