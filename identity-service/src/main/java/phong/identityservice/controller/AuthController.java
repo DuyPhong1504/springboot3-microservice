@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import phong.identityservice.model.request.AuthenticationRequest;
 import phong.identityservice.model.request.CheckTokenRequest;
+import phong.identityservice.model.request.RefreshRequest;
 import phong.identityservice.model.response.ApiResponse;
 import phong.identityservice.model.response.AuthenticationResponse;
 import phong.identityservice.model.response.CheckTokenResponse;
@@ -24,7 +25,7 @@ import java.text.ParseException;
 public class AuthController {
     AuthenticationService authenticationService;
 
-    @PostMapping("/authenticate")
+    @PostMapping("/getToken")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse response = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
@@ -38,5 +39,11 @@ public class AuthController {
         return ApiResponse.<CheckTokenResponse>builder()
                 .result(response)
                 .build();
+    }
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
 }
