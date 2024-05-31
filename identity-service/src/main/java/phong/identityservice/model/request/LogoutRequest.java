@@ -1,4 +1,4 @@
-package phong.identityservice.model.response;
+package phong.identityservice.model.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CheckTokenResponse {
+public class LogoutRequest {
     String token;
-    boolean valid;
 }

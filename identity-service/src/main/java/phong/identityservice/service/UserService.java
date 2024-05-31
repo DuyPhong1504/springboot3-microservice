@@ -3,6 +3,9 @@ package phong.identityservice.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,16 +53,20 @@ public class UserService {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
+    @Cacheable(value = "users", key = "#id")
     public UserResponse getUser(String id) {
         return userMapper.toUserResponse(findUserById(id));
     }
 
+    @CachePut(value = "users", key = "#id")
     public UserResponse updateUser(String id, UserUpdateRequest request) {
         UserEntity userEntity = findUserById(id);
         userMapper.updateUser(userEntity, request);
         return userMapper.toUserResponse(userRepository.save(userEntity));
     }
 
+
+    @CacheEvict(value = "users", key = "#id")
     public UserResponse deleteUser(String id) {
         UserEntity userEntity = findUserById(id);
         userEntity.setDeleteFlg(true);
@@ -70,7 +77,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
-    public UserResponse getInfo(){
+    public UserResponse getInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         UserEntity userEntity = userRepository.findByUserName(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));

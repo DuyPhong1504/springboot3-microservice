@@ -3,6 +3,7 @@ package phong.identityservice.exception;
 import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,33 +33,20 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = exception.getErrorCode();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseEntity.status(errorCode.getStatusCode())
+                .body(apiResponse);
     }
 
-//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-//    ResponseEntity<ApiResponse> handlingMethodArgumentException(MethodArgumentNotValidException exception) {
-//        ApiResponse apiResponse = new ApiResponse<>();
-//        BindingResult result = exception.getBindingResult();
-//        StringBuilder errorMessage = new StringBuilder();
-//        ErrorCode errorCode;
-//        String enumKey;
-//        Map<String, Object> attributes = null;
-//        for (FieldError error : result.getFieldErrors()) {
-//            enumKey = error.getDefaultMessage();
-//            errorCode = ErrorCode.valueOf(enumKey);
-//
-//            var constraintViolation = error.unwrap(ConstraintViolation.class);
-//            attributes = constraintViolation.getConstraintDescriptor().getAttributes();
-//            log.info(attributes.toString());
-//
-//            String message = Objects.nonNull(attributes) ?
-//                    mapAttribute(errorCode.getMessage(), attributes)
-//                    : errorCode.getMessage();
-//            errorMessage.append(errorCode.getMessage()).append(" \n ");
-//        }
-//        apiResponse.setMessage(errorMessage.toString());
-//        return ResponseEntity.badRequest().body(apiResponse);
-//    }
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException exception) {
+        ApiResponse apiResponse = new ApiResponse<>();
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setCode(errorCode.getCode());
+        return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
+    }
+
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception) {

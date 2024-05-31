@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
+
 @Getter
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -22,7 +23,9 @@ public enum ErrorCode {
         this.statusCode = statusCode;
     }
 
+
     private int code;
     private String message;
     private HttpStatusCode statusCode;
+
 }

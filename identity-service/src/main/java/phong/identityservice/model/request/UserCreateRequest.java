@@ -1,10 +1,12 @@
 package phong.identityservice.model.request;
 
+import ch.qos.logback.core.spi.ErrorCodes;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import phong.identityservice.exception.ErrorCode;
+import phong.identityservice.validator.DobConstraint;
 
 import java.time.LocalDate;
 
@@ -21,5 +23,6 @@ public class UserCreateRequest {
     @Email
     String email;
     String fullName;
+    @DobConstraint(min = 10, message = "INVALID_DOB")
     LocalDate dob;
 }
