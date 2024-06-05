@@ -15,6 +15,7 @@ public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     UserResponse toUserResponse(UserEntity entity);
 
-    void  updateUser(@MappingTarget UserEntity userEntity, UserUpdateRequest request);
+    void updateUser(@MappingTarget UserEntity userEntity, UserUpdateRequest request);
 
+    
 }

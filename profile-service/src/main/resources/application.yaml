@@ -1,0 +1,13 @@
+spring:
+  devtools:
+    livereload:
+      enabled: false
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: 15042000
+server:
+  port: 8081
+  servlet:
+    context-path: /profile

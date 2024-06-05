@@ -3,6 +3,7 @@ package phong.identityservice.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,10 +17,14 @@ import phong.identityservice.enums.Role;
 import phong.identityservice.exception.AppException;
 import phong.identityservice.exception.ErrorCode;
 import phong.identityservice.mapper.UserMapper;
+import phong.identityservice.mapper.UserProfileMapper;
 import phong.identityservice.model.request.UserCreateRequest;
+import phong.identityservice.model.request.UserProfileCreateRequest;
 import phong.identityservice.model.request.UserUpdateRequest;
+import phong.identityservice.model.response.UserProfileResponse;
 import phong.identityservice.repository.UserRepository;
 import phong.identityservice.model.response.UserResponse;
+import phong.identityservice.repository.httpclient.ProfileClient;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +33,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserService {
 
     UserRepository userRepository;
@@ -35,6 +41,10 @@ public class UserService {
     UserMapper userMapper;
 
     PasswordEncoder passwordEncoder;
+
+    ProfileClient profileClient;
+
+    UserProfileMapper userProfileMapper;
 
 
     public UserResponse createUser(UserCreateRequest request) {
@@ -46,7 +56,13 @@ public class UserService {
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
         userEntity.setRoles(roles);
-        return userMapper.toUserResponse(userRepository.save(userEntity));
+        userEntity = userRepository.save(userEntity);
+        // add profile client
+        UserProfileCreateRequest userProfileCreateRequest = userProfileMapper.toUserProfileCreateRequest(request);
+        userProfileCreateRequest.setUserId(userEntity.getId());
+        UserProfileResponse userProfileResponse = profileClient.createProfile(userProfileCreateRequest);
+
+        return userMapper.toUserResponse(userEntity);
     }
 
     public List<UserResponse> getAllUser() {

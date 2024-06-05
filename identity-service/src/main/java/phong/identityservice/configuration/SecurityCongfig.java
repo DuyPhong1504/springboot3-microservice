@@ -24,7 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityCongfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/user/**", "/auth/**"};
+    private final String[] PUBLIC_ENDPOINTS = {"/users/**", "/auth/**"};
 
     @Value("${jwt.signKey}")
     private String signKey;
@@ -37,7 +37,7 @@ public class SecurityCongfig {
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
