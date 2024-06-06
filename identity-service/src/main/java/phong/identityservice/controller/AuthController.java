@@ -40,12 +40,7 @@ public class AuthController {
                 .result(response)
                 .build();
     }
-
-//    @PostMapping("/test")
-//    ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
-//        var result = authenticationService.refreshToken(request);
-//        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
-//    }
+    
 
     @PostMapping("/refreshToken")
     ApiResponse<CheckTokenResponse> refreshToken(@RequestBody CheckTokenRequest request) throws ParseException, JOSEException {

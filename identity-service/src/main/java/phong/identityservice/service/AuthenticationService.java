@@ -53,6 +53,7 @@ public class AuthenticationService {
     protected long REFRESHABLE_DURATION;
 
     public CheckTokenResponse checkToken(CheckTokenRequest request) throws JOSEException, ParseException {
+        System.out.print("in check token");
         var token = request.getToken();
         boolean isValid = true;
         try {
