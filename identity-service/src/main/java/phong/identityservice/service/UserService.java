@@ -60,7 +60,8 @@ public class UserService {
         // add profile client
         UserProfileCreateRequest userProfileCreateRequest = userProfileMapper.toUserProfileCreateRequest(request);
         userProfileCreateRequest.setUserId(userEntity.getId());
-        UserProfileResponse userProfileResponse = profileClient.createProfile(userProfileCreateRequest);
+        profileClient.createProfile(userProfileCreateRequest);
+//        UserProfileResponse userProfileResponse = profileClient.createProfile(userProfileCreateRequest);
 
         return userMapper.toUserResponse(userEntity);
     }
