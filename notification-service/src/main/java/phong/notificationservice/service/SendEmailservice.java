@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import phong.notificationservice.dto.request.SendEmailRequest;
 
 import java.util.Properties;
 import javax.mail.*;
@@ -19,9 +20,8 @@ public class SendEmailservice {
     private String host = "smtp.gmail.com"; // SMTP server address
     private String user = "onlinemakefriends@gmail.com"; // Sender's email
     private String password = "ckapnweiblqmuygr"; // Sender's email password
-    private String to = "mklaaicogido123@gmail.com";
 
-    public void sendEmailSmtpGmail(String subject, String content) {
+    public void sendEmailSmtpGmail(SendEmailRequest request) {
         // Recipient's email ID
         // Get system properties
         Properties properties = System.getProperties();
@@ -40,13 +40,14 @@ public class SendEmailservice {
             // Create a default MimeMessage object
             MimeMessage message = new MimeMessage(session);
             // Set From: header field
-            message.setFrom(new InternetAddress(user));
+//            message.setFrom(new InternetAddress(user));
+            message.setFrom(new InternetAddress(request.getFrom()));
             // Set To: header field
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(request.getTo()));
             // Set Subject: header field
-            message.setSubject(subject);
+            message.setSubject(request.getSubject());
             // Now set the actual message
-            message.setText(content);
+            message.setText(request.getContent());
             // Send message
             Transport.send(message);
             log.info("Sent message successfully....");
