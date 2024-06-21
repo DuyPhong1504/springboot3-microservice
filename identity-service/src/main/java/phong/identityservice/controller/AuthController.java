@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import phong.identityservice.model.request.AuthenticationRequest;
 import phong.identityservice.model.request.CheckTokenRequest;
+import phong.identityservice.model.request.LogoutRequest;
 import phong.identityservice.model.request.RefreshRequest;
 import phong.identityservice.model.response.ApiResponse;
 import phong.identityservice.model.response.AuthenticationResponse;
@@ -40,11 +41,18 @@ public class AuthController {
                 .result(response)
                 .build();
     }
-    
+
 
     @PostMapping("/refreshToken")
     ApiResponse<CheckTokenResponse> refreshToken(@RequestBody CheckTokenRequest request) throws ParseException, JOSEException {
         var result = authenticationService.refreshToken(request);
+        return ApiResponse.<CheckTokenResponse>builder().result(result).build();
+    }
+
+    @PostMapping("/logOut")
+    ApiResponse<CheckTokenResponse> refreshToken(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        var result = CheckTokenResponse.builder().token(request.getToken()).valid(true).build();
         return ApiResponse.<CheckTokenResponse>builder().result(result).build();
     }
 }

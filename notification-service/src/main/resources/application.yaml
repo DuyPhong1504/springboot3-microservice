@@ -1,0 +1,11 @@
+spring:
+  devtools:
+    livereload:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/notification-service?authSource=admin
+server:
+  port: 8082
+  servlet:
+    context-path: /notification
